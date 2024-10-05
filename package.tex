@@ -1,0 +1,148 @@
+\RequirePackage{natbib}
+\usepackage{bibentry}
+\usepackage{amsmath}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{bbm}
+\usepackage{tikz}
+\usepackage{bm}
+\usepackage{pdfpages}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{pgfplots}
+% \usepackage{abstract}
+\usepackage[T2A,T1]{fontenc}
+\usepackage[symbols, nogroupskip,sort = none]{glossaries-extra}
+% \usepackage{nomencl}
+\usetikzlibrary{spy}
+\usetikzlibrary{shapes}
+\usetikzlibrary{plotmarks}
+\usepackage[margin = 2.5cm]{geometry}
+
+\tikzset{new spy style/.style={spy scope={%
+    magnification=5,
+    size=1.25cm,
+    connect spies,
+    every spy on node/.style={
+        rectangle,
+        draw,
+    },
+    every spy in node/.style={
+        draw,
+        rectangle,
+        fill=gray!40,
+    }
+}}}
+\def\UseOption{tikz}
+
+\newcommand\script[1]{{\fontfamily{pzc}\fontshape{it}\selectfont#1}}
+\newcommand{\conjug}[1]{{\fontdimen8\textfont3=0.25pt\mkern2mu\overline{\mkern-1mu #1\mkern-2mu}}\mkern2mu}
+\newcommand{\cor}{\text{\reflectbox{R}}}
+\DeclareMathOperator{\tr}{Tr}
+\DeclareMathOperator{\conv}{Conv}
+\DeclareMathOperator{\diag}{Diag}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\trd}{TrDg}
+\DeclareMathOperator{\res}{R}
+\DeclareMathOperator{\dimm}{dim}
+\DeclareMathOperator{\vect}{Vect}
+\newcommand{\un}{\mathbbm{1}}
+\newcommand{\RR}{{\mathbb{R}}}
+\newcommand{\EE}{{\mathbb{E}}}
+\newcommand{\NN}{{\mathbb{N}}}
+\newcommand{\ZZ}{{\mathbb{Z}}}
+\newcommand{\CC}{{\mathbb{C}}}
+\newcommand{\herm}{{\sf H}}
+\newcommand{\trans}{{T}}
+\DeclareMathOperator{\acos}{acos}
+\DeclareMathOperator{\asin}{asin}
+
+\newcommand{\asto}{\overset{\rm a.s.}{\longrightarrow}}
+\newcommand{\probto}{\overset{\rm P}{\longrightarrow}}
+
+\def\restriction#1#2{\mathchoice
+              {\setbox1\hbox{${\displaystyle #1}_{\scriptstyle #2}$}
+              \restrictionaux{#1}{#2}}
+              {\setbox1\hbox{${\textstyle #1}_{\scriptstyle #2}$}
+              \restrictionaux{#1}{#2}}
+              {\setbox1\hbox{${\scriptstyle #1}_{\scriptscriptstyle #2}$}
+              \restrictionaux{#1}{#2}}
+              {\setbox1\hbox{${\scriptscriptstyle #1}_{\scriptscriptstyle #2}$}
+              \restrictionaux{#1}{#2}}}
+\def\restrictionaux#1#2{{#1\,\smash{\vrule height .8\ht1 depth .85\dp1}}_{\,#2}} 
+% \newcounter{theorem}
+\newtheorem{theorem}{Theorem}[chapter]
+% \numberwithin{ctheorem}
+\newtheorem{declinaison}[theorem]{Offshot}
+% \newcounter{assumption}
+\newtheorem{assumption}{Assumption}
+% \newtheorem{assumption}[assumption]{Assumption}
+
+\newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcounter{cdefinition}
+\newtheorem{definition}[cdefinition]{Definition}
+\newtheorem{defpro}[cdefinition]{Definition/Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Claim}
+% \newenvironment{assm4}
+%   {\addtocounter{assumption}{-4}%
+%    \renewcommand{\theassumption}{\arabic{assumption}}%
+%    \begin{assumption}}
+%    {\end{assumption}}
+% \renewcommand\summaryname{Remerciements}
+\newenvironment{Remerciements}%
+    {\small\begin{center}%
+    \bfseries{\summaryname} \end{center}}
+
+  \newenvironment{assbis0}
+  {%
+   \renewcommand{\theassumption}{\arabic{assumption} bis}%
+   \begin{assumption}}
+  {\end{assumption}}
+  \newenvironment{asster0}
+  {%
+   \renewcommand{\theassumption}{\arabic{assumption} ter}%
+   \begin{assumption}}
+  {\end{assumption}}
+  \newenvironment{assconv0}
+  {%
+   \renewcommand{\theassumption}{\arabic{assumption}${}_c$}%
+   \begin{assumption}}
+  {\end{assumption}}
+
+
+
+\newcommand{\RED}{\color[rgb]{0.70,0,0}}
+\newcommand{\BLUE}{\color[rgb]{0,0,0.69}}
+\newcommand{\GREEN}{\color[rgb]{0,0.6,0}}
+\newcommand{\BLACK}{\color[rgb]{0,0,0}}
+\newcommand{\PURPLE}{\color[rgb]{0.69,0,0.8}}
+\newcommand{\am}{\text{argmin}}
+
+% \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+% \renewcommand{\thesubsection}{\Alph{chapter}.\arabic{section}.\arabic{subsection}}
+% \renewcommand{\thepart}{\Roman{part}}
+% \renewcommand{\thechapter}{\Alph{chapter}}
+% \newenvironment{abstract}{%
+%     \cleardoublepage
+%     \null\vfil
+%     % \@beginparpenalty\@lowpenalty
+%     \begin{center}%
+%       \bfseries \abstractname
+%       % \@endparpenalty\@M
+%     \end{center}}%
+%    {\par\vfil\null}
+% \makeatother
+
+% \newenvironment*{remerciements}{%
+% \renewcommand*{\abstractname}{Remerciements}
+% \begin{abstract}
+% }{\end{abstract}}

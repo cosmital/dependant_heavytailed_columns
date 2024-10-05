@@ -17,6 +17,33 @@
 \newcommand{\op}{ \mathop{ \vphantom{\bigoplus} \mathchoice {\vcenter{\hbox{\resizebox{\widthof{$\displaystyle\bigoplus$}}{!}{$\boxplus$}}}} {\vcenter{\hbox{\resizebox{\widthof{$\bigoplus$}}{!}{$\boxplus$}}}} {\vcenter{\hbox{\resizebox{\widthof{$\scriptstyle\oplus$}}{!}{$\boxplus$}}}} {\vcenter{\hbox{\resizebox{\widthof{$\scriptscriptstyle\oplus$}}{!}{$\boxplus$}}}} }\displaylimits } 
 
 \renewcommand{\arraystretch}{1.5}
+\newcommand{\lip}{\mathcal L \textit{ip}}
+
+\newcommand{\un}{\mathbbm{1}}
+\newcommand{\gP}{>}
+\DeclareMathOperator{\tr}{Tr}
+\DeclareMathOperator{\diag}{Diag}
+\DeclareMathOperator{\gra}{Gra}
+\DeclareMathOperator{\ran}{Ran}
+\DeclareMathOperator{\spctr}{Sp}
+\DeclareMathOperator{\incr}{inc}
+\DeclareMathOperator{\trd}{TrDg}
+\DeclareMathOperator{\res}{R}
+\DeclareMathOperator{\dimm}{dim}
+\DeclareMathOperator{\vect}{Vect}
+\DeclareMathOperator{\conv}{Conv}
+\DeclareMathOperator{\dom}{Dom}
+\DeclareMathOperator{\epi}{Epi}
+\DeclareMathOperator{\id}{Id}
+\DeclareMathOperator{\inv}{Iv}
+\DeclareMathOperator{\cl}{Cl}
+\DeclareMathOperator{\intr}{Int}
+\DeclareMathOperator{\et}{ and }
+\DeclareMathOperator{\ou}{ or }
+\DeclareMathOperator{\si}{ if }
+\DeclareMathOperator{\into}{ It }
+\DeclareMathOperator{\hs}{HS}
+
 % \usepackage[
 % backend=biber,
 % style=alphabetic,
@@ -84,7 +111,533 @@
 
 \ABSTRACT{Abstract}
 \begin{document}
-helloe try awegawrga
+\section{Notations}
+Let us introduce the notations $\mathbb R_+\equiv [0,\infty)$, $\mathbb R_+^*\equiv (0,+\infty)$ and $\mathbb H \equiv \{z\in \mathbb C, \Im(z)>0\}$ (the complex half plane).
+Given $n,p\in \mathbb N$, $[n] \equiv \{1, \ldots,  n\}$, the entries of a vector $x\in \mathbb C^p$ are generally denoted $x_1, \ldots, x_p$, the columns of a complex matrix $A\in \mathcal{M}_{p,n}$ are denoted $a_1, \ldots, a_n$. Let us denote $\mathcal{M}_{n}$, the set of square matrices $\mathcal{M}_{n,n}$, $S_n$, the set of (possibly non-real) symmetric matrices, $H_n$, the set of Hermitian matrices, $\mathcal O_n$, the set of orthogonal matrices, $\mathcal U_n$, the set of unitary matrices and $D_n$, the set of diagonal matrices. We introduce the natural order relation on $H_n$, given $A,B\in H_n$:
+\begin{align*}
+     A\leq B
+     &&\Longrightarrow&&
+     \forall x\in \mathbb C^n:\quad x^*(B-A)x\geq 0.
+ \end{align*} 
+ % Besides, given a square matrix $A \in \mathcal M_{p}(\mathbb C)$, we denote $|A| = \sqrt{AA^*}\in \mathcal{H}_{p}$.
+ Given $x\in \mathbb C^n$, $D = \diag(x) \in D_n$ is the diagonal matrix having the elements $x_1, \ldots,x_n$ on the diagonal then one usually denote $\forall i\in [n]$, $D_i\equiv x_i$. The conjugate transpose of a matrix $M$ is denoted $M^* = \bar{M}^T$. Given a square matrix $A \in \mathcal M_{p}(\mathbb C)$, the spectrum of $A$ is $\spctr(A)$ and we denote $|A| = \sqrt{AA^*}\in \mathcal{H}_{p}$.
+
+ The $\ell_2$ norm on $\mathbb C^p$ is denoted $\|\cdot\|$ ($\|x\| \equiv \sqrt{\sum_{i=1}^p |x_i|^2}$), then the Hilbert-Schmidt norm is denoted $\|\cdot \|_{\hs}$ ($\forall M\in \mathcal{M}_{p,n}$: $\|M\|_{\hs} = \tr(MM^*)$) and the spectral norm is denoted $\|\cdot\|$ ($\|M\| = \sup_{\|x\|=1}\|Mx\|$). Given two normed vector spaces $(E,\|\cdot \|)$ and $(E', \|\cdot \|')$, and a linear mapping $u:E\to F$, the operator norm of $u$ is denoted $\|u\| \equiv \sup_{\|x\|\leq 1}\|u(x)\|'$.
+
+
+
+We will set in this paper \textit{quasi-asymptotic} results on random matrices, meaning that we will express convergence results for inequalities or concentration inequalities when important quantities like the number of rows $p$ and the number of columns $n$ converge to $\infty$ or the imaginary part of the complex parameter $z\in \mathbb C$ appearing in the definition of the Stieltjes Transform tends to zero. Just the rate of convergence is relevant, therefore, in order to remove smoothly the constants from the quasi-asymptotic result, we will introduce several notations. Below, the set of indexes $I$ could be thought to be $\mathbb N\times \mathbb N \times \mathbb C$ or even something more elaborate like $\{(p,n,z) \in \mathbb N\times \mathbb N \times \mathbb C, p\leq n, \Im(z)>0\}$ (see Assumption~\ref{ass:n_p_commensurable}).
+
+Given an index set $\Theta$ and two family of parameters $(a_\theta)_{\theta\in \Theta}\in \mathbb R_+Î$ and $(b_\theta)_{\theta\in \Theta}\in \mathbb R_+^\Theta$, we denote: ``$a_\theta\leq O(b_\theta), \  \theta\in \Theta$'' or more simply ``$a\leq O(b)$'' iif there exists a constant $C>0$ such that $\forall \theta\in \Theta$: $a_\theta \leq C b_\theta$ (and we note $a\geq O(b)$ iif $\exists C>0$ such that $\forall \theta\in \Theta$, $a_\theta\geq Cb_\theta$). If $A,B \in \prod_{\theta\in \Theta}H_{n_\theta}$ are two families of Hermitian matrices, $A\leq O(B)$ means that there exists a constant $C>0$ such that: 
+\begin{align*}
+    \forall \theta \in \Theta:\qquad B_\theta-A_\theta \geq C I_{n_\theta}.
+\end{align*}
+
+Following a previous work done in \cite , we will express concentration inequalities with operators which are set valued mappings. An operator $\alpha: \mathbb R \mapsto 2^{\mathbb R}$ is said to be a positive probabilitic operator and we denote $\alpha \in \mathcal M_{\mathbb P_+}$ iif it is maximally decreasing\footnote{Following the monotone operator theory (see for instance~\cite{}), given an operator $\alpha :\mathbb R \mapsto 2^{\mathbb R}$, one denotes $\gra(\alpha) \equiv \{(x,y) \in \mathbb R^2: y\in \alpha(x)\}$, the graph of $\alpha$, $\dom(\alpha) \equiv \{x\in \mathbb R, f(x) \neq \emptyset\}$, the domain of $\alpha$ and $\ran(\alpha) \equiv \{y \in \mathbb R, \exists x\in \dom(\alpha): y \in \alpha(x)\}$ then $\alpha$ is maximally decreasing iif it satisfies the implication $\forall x,y\in \mathbb R^ 2 $: 
+\begin{align*}
+    \forall (w,z) \in \gra(\alpha): (x-w)(z-y) \geq 0
+    &&\Longrightarrow&&
+    (x,y) \in \gra(\alpha).
+\end{align*}} $\{1\}\subset \ran(\alpha)$ and $\dom(\alpha)\subset \mathbb R_+$. 
+Let us consider a family of random variables $(X_\theta)_{\theta\in \Theta}\in \mathbb R^\Theta$ and a family of positive probabilitic operators $(\alpha_\theta)_\theta\in \mathcal M_{\mathbb P_+}^\Theta$.
+If there exists some constants $C,c>0$ such that $\forall \theta\in \Theta$:
+\begin{align*}
+    \forall t\geq 0:\quad \mathbb P(|X_\theta - X_\theta'|\geq t) \leq C\alpha_\theta(ct),
+\end{align*}
+where $(X_\theta')_{\theta\in \Theta}$ is a family of independent copies of $X_\theta$, $\theta\in \Theta$, then we denote $X \in \alpha$ or if one needs to describe more precisely the dependence on $\Theta$: 
+\begin{align*}
+    X_\theta \in \alpha_\theta, \theta \in \Theta.
+\end{align*}
+When there exists a family of deterministic parameters $(\tilde X_\theta)_{\theta\in \Theta}$ such that $\forall \theta\in \Theta$:
+\begin{align*}
+    \forall t\geq 0:\quad \mathbb P(|X_\theta - \tilde X_\theta|\geq t) \leq C\alpha_\theta(ct),
+\end{align*}
+for some constants $C,c>0$, one denotes $X\in\tilde X \pm \alpha$ or more simply $X\in O(m) \pm \alpha$, for any $(m_\theta)_{\theta \in \Theta}$ such that $|\tilde X| \leq O(m)$.
+
+We rely on real-valued functional to extend those notations to random vectors. Given a family of normed vector spaces $(E_\theta,\|\cdot\|)_{\theta\in \Theta}$, a family of random vectors $(X_\theta)_\theta\in \prod_{\theta\in \Theta} E_\theta$, the notation ``$X\in \alpha$'' means that there exists some constants $C,c>0$ such that\footnote{With the random variable notations, that means that:
+\begin{align*}
+    f(X_\theta) \in \alpha_\theta, \qquad \theta\in \Theta, \ f:E_\theta \to \mathbb R, \ 1\text{-Lipschitz}.
+\end{align*}} $\forall \theta\in \Theta$ for all $1$-Lipschitz mappings $f: E_\theta \to \mathbb R$:
+\begin{align*}
+    \forall t\geq 0:\quad \mathbb P(|f(X_\theta) - f(X_\theta')|\geq t) \leq C\alpha_\theta(ct),
+\end{align*}
+where for all $\theta \in \Theta$, $X_\theta'$ is an independent copy of $X_\theta$. If in addition, we are given a family of deterministic vectors $(\tilde X_\theta)_{\theta \in \Theta} \in \prod_{\theta\in \Theta} E_\theta$ such that exists some constants $C,c>0$ such that\footnote{With previous notations, that means that $X \in \alpha$ and:
+\begin{align*}
+    u(X_\theta) \in u(\tilde X_\theta) \pm \alpha_\theta, \qquad \theta\in \Theta, \ u:E_\theta \to \mathbb R, \ \text{linear}, \ \|u\| \leq 1.
+\end{align*}} $\forall \theta\in \Theta$ for all linear form $u: E_\theta \to \mathbb R$ such that $\|u\|\leq 1$:
+\begin{align*}
+    \forall t\geq 0:\quad \mathbb P(|u(X_\theta - \tilde X_\theta)|\geq t) \leq C\alpha_\theta(ct).
+\end{align*}
+
+We denote $\id$, the identity operator $t\mapsto \{t\}$, then $\sqrt{\id}:t\mapsto \{\sqrt{t}\}$, it satisfies $\dom(\sqrt{\id})\subset \mathbb R_+$.
+
+\section{Setting}
+By default the sets of matrices $\mathcal{M}_{p,n}$ (in particular $D_n\subset \mathcal{M}_{n}$), $p,n\in \mathbb N$ are endowed with Hilbert-Schmidt norms $\|\cdot \|_{\hs}$ and the sets of random vectors $\mathbb R^p$, $p\in \mathbb N$ are endowed with the $\ell_2$ norm. 
+
+In what follow, we consider a constant $\gamma>0$ and introduce:
+\begin{align*}
+    \Theta_{\gamma} \equiv \{(n,p) \in \mathbb N^2, n\geq \gamma p\}.
+    % \Theta_{\gamma} \equiv \{(n,p,z) \in \mathbb N^2\times \mathbb H, n\geq \gamma p\}.
+\end{align*}
+the index set that will direct our quasi-asymptotic results.
+
+Considering a family of random matrices $X = (X_{(n,p)})_{(n,p)\in \Theta_\gamma}$, given $i\in \mathbb N$, let us naturally denote $x_i \equiv (x_i^{(n,p)})_{(n,p)\in \Theta_\gamma, n\geq i}$, the family of the $i^{th}$ column of $X$ and introduce the family of means, of centered and non-centered empirical covariance matrices for all $i\in \mathbb N$:
+ % respectively $\mu \equiv (\mu_i^{(n,p)})_{(n,p)\in \Theta_\gamma, i\in [n]}$, $\Sigma \equiv (\Sigma_i^{(n,p)})_{(n,p)\in \Theta_\gamma, i\in [n]}$ and $C \equiv (C_i^{(n,p)})_{(n,p)\in \Theta_\gamma, i\in [n]}$ satisfying $\forall n,p \in \Theta_\gamma$:
+\begin{align*}
+     \mu_i\equiv \mathbb E[x_i]
+     \qquad \Sigma_i \equiv \mathbb E[x_i(x_i)^T].
+     \qquad C_i \equiv \Sigma_i - \mu_i(\mu_i)^T.
+\end{align*} 
+% In what follows, relying on our short notations, we will avoid mentioning the indexes $p,n$ as much as possible (and keeping in mind that $p\leq \gamma n$).
+
+Considering a family of positive probability operators $\alpha \in \mathcal M_{\mathbb P_+}^{\Theta_\gamma}$, we will assume the following properties are satisfied:
+\begin{itemize}
+    \item for all $(n,p)\in \Theta_\gamma$: $x_i^{(n,p)},\ldots, x_n^{(n,p)}$ are independent,
+    \item $X \in \alpha$,
+    \item $\sigma_\alpha \equiv \int t\alpha(t) dt \leq \infty$ and $\alpha(\sigma\alpha)\leq O(1)$,
+    \item $\|\mu_i\| \leq O(1)$, $i\in [n]$,
+    \item $\Sigma_i \geq O(1)$, $i\in [n]$.
+\end{itemize}
+
+\begin{remark}\label{rem:comment_on_assumptions}
+    \begin{itemize}
+        \item Possible alpha...
+        \item bound on $\|\mu\|$...
+        \item lower bound on $\Sigma$...
+    \end{itemize}
+\end{remark}
+
+
+
+\section{Concentration of the resolvent.}
+To study the spectral distribution of $\frac{1}{n}XX^T$:
+\begin{align*}
+    \nu \equiv \frac{1}{n}\sum_{\lambda \in \spctr(\frac{1}{n}XX^T)} \delta_{\lambda},
+ \end{align*} 
+ the classical approach is to look at the Stieltjes transform defined for any $z\notin \spctr(\frac{1}{n}XX^T)$ as:
+ \begin{align*}
+    m(z) \equiv \int \frac{1}{z- \lambda } d\nu(\lambda).
+ \end{align*}
+ To deduce properties on $\nu$, it is sufficient to study $m(z)$ for $z\in \mathbb C$ such that $\Im(z)\in (0,1]$, we will thus restrict our study to this range to simplify the bounds in the convergence results.
+ Introducing the family of resolvents $Q\equiv (Q^z_{n,p})_{(n,p) \in \Theta_\gamma, \Im(z)\in(0,1]}\in \prod_{(p,n)\in \Theta_\gamma, \Im(z)\in(0,1]} \mathcal{M}_{p}$ defined for any $(p,n) \in \Theta_\gamma$, $\forall z\in \mathbb H$ as:
+ % \footnote{One classically rather study the matrix $-z Q_z = (\frac{1}{n}XX^ T - I_p)$, but dispite the fact that it is conceptually the same object, $Q^z$ has the advantage to be a $O(\frac{1}{|z|\Im(z)\sqrt{n}}$-Lipschitz transformation of $X$, as it will be seen in bounded from below for all values of $z$ as stated in Proposition~\ref{pro:concentration_resolvente_1}. }:
+ \begin{align*}
+     Q^z = \left(I_p - \frac{1}{n}XX^T\right)^{-1}
+     % Q^z = \left( I_p - \frac{1}{zn}XX^T\right)^{-1}
+ \end{align*}
+ one will rely on the identity:
+ \begin{align*}
+    m(z) = \frac{1}{p}\tr(Q^z).
+    % m(z) = -\frac{1}{zp}\tr(Q^z).
+ \end{align*}
+
+ It is somehow convenient to study simultaneously the so-called ``co-resolvent'' $\check Q$ defined as:
+ \begin{align*}
+    \check Q = \left( zI_n - \frac{1}{n}X^TX\right)^{-1}\in \prod_{(n,p)\in \Theta_\gamma, \Im(z)\in (0,1]} \mathcal{M}_{p,n}.
+    % \check Q^z = \left( I_n - \frac{1}{zn}X^TX\right)^{-1}\in \prod_{(n,p)\in \Theta_\gamma} \mathcal{M}_{p,n}.
+ \end{align*}
+ To set the concentration of $Q$ and $\check Q$, let us first bound them, it is a trivial and classical result of Random matrix theory that we provide here without proof.
+
+\begin{lemma}\label{lem:Borne_resolvante}
+$|Q|, |\check Q| \leq O \left(\frac{1}{\Im z}\right)$.
+% \begin{align*}
+%   O \left(\kappa_z\right) I_p \leq |Q^z| \leq O \left(\kappa_z\right)I_p&
+%   &\text{and}&
+%   &O \left(\check \kappa_z\right) I_p \leq |\check Q^z| \leq O \left(\check \kappa_z\right)I_p
+% \end{align*}
+% (for the classical order relation on hermitian matrices).
+\end{lemma}
+Let us note that from the identity $Q \frac{1}{n}XX^T = Q - I_p$, one can also bound:
+\begin{align}\label{eq:bound_QX}
+    \left\Vert\frac{1}{n}Q X\right\Vert \leq \frac{1}{\sqrt n}\sqrt{\left\Vert\frac{1}{n}QXX^TQ\right\Vert} \leq \frac{1}{\sqrt n}\sqrt{\left\Vert Q^ 2 -  Q\right\Vert}\leq O \left( \frac{1}{\sqrt{n}\Im(z)} \right)
+\end{align}
+
+\begin{proposition}\label{pro:concentration_resolvente_1}
+  $Q^z, \check Q^z \in \alpha(\frac{\cdot}{\Im (z)^2\sqrt n})$.
+\end{proposition}
+\begin{proof}
+  % We could see it as a consequence of Theorem~\ref{the:lipschitz_COncentration_solution_conentrated_equation_phi_concentre_norme_infinie}, applied to the equation
+  % \begin{align*}
+  %   Q^z = \frac{I_p}{z} + \frac{1}{zn} XX^TQ^z,
+  % \end{align*}  
+  % but it is probably more simple to see 
+  Introducing the mappings $\Phi : \mathcal M_{p,n} \to \mathcal M_{p}$ and $\check\Phi: \mathcal M_{p,n} \to \mathcal M_{n}$ defined as:
+  \begin{align*}
+     \Phi(M) =  \left(zI_p - \frac{MM^T}{n}\right)^{-1}&
+     % \Phi(M) =  \left(I_p - \frac{MM^T}{zn}\right)^{-1}&
+     &\text{and}&
+     &\check \Phi(M) =  \left(zI_n - \frac{M^TM}{n}\right)^{-1},
+     % &\check \Phi(M) =  \left(I_n - \frac{M^TM}{zn}\right)^{-1},
+   \end{align*}
+   it is sufficient to show that $\Phi$ and $\check \Phi$ are both $O(1/\sqrt n\Im(z)^2)$-Lipschitz (for the Hilbert-Schmidt norm).
+    % on $\mathcal M_{n,p} \equiv X(\mathcal A_Q)$\footnote{$\mathcal M_{n,p}^{\mathcal A_Q} \subset \{ M \in \mathcal M_{n,p}, \frac{1}{n}\|MM^T\| \leq \nu+\varepsilon \}$}. 
+    For any $M \in \mathcal M_{n,p}$ and any $H \in \mathcal M_{p,n}$, we can bound:
+     % $\|M\|\leq (\nu + \varepsilon) \sqrt n \leq O(\sqrt n)$ and:
+  \begin{align*}
+    \left\Vert \restrict{d\Phi }{M} \cdot H \right\Vert_{\hs} 
+    &= \left\Vert \Phi \left(M\right)\frac{1}{n}(MH^T + HM^T) \Phi \left(M\right)\right\Vert_{\hs}
+    % &\leq \frac{2}{n}\left\Vert \Phi \left(M\right)MH^T\Phi \left(M\right)\right\Vert_{\hs}
+    &\leq O \left( \frac{1}{\Im(z)^2\sqrt n} \right) \|H\|_{\hs},
+    % = \frac{1}{\sqrt n} \sqrt{\tr \left( \Phi \left(M\right)MH^T\Phi \left(M\right)\Phi \left(M\right)H^T\Phi \left(M\right) \right)}
+    % = \left\Vert \Phi(M)(z\Phi(M) - I_p)\right\Vert 
+    % \leq O \left(\frac{\|H\|}{\sqrt n}\right).%
+    % &\leq \frac{(\nu + \varepsilon) |z| \|H\|}{d(z,S_\varepsilon)^2 \sqrt n} 
+    % \leq O \left(\frac{\|H\|}{\sqrt n}\right).
+  \end{align*}
+  thanks to lemma~\ref{lem:Borne_resolvante} and \eqref{eq:bound_QX}.
+  The same holds for $\check Q^z$.
+\end{proof}
+
+We also provide here the expression of the concentration of $QX$ and $X^T\check Q$ that will be useful later.
+\begin{lemma}\label{lem:concentration_QX_s_z}
+  $Q X =  X^T \check Q  \in \alpha \left( \Im(z)^2 \right)$
+  % and $\forall i \in [n]$, $\|\mathbb E_ {\mathcal A_Q}[Qx_i]\| \leq O \left( \frac{|z|}{1+|z|} \right)$. 
+\end{lemma}
+\begin{proof}
+  Let us look at the variations of the mapping $\Psi : \mathcal M_{p,n} \to \mathcal M_{p, n}(\mathbb C)$ defined as:
+  \begin{align*}
+     \Psi(M) =  \left(zI_p - \frac{MM^T}{n}\right)^{-1} M.
+   \end{align*}
+   to show the concentration of $Q X  = \Psi(X)$. 
+   For all $H, M \in \mathcal M_{n,p}$ (and with the notation $\Phi(M) = \left(zI_p - \frac{MM^T}{n}\right)^{-1} $ given in the proof of Proposition~\ref{pro:concentration_resolvente_1}), let us bound:
+  \begin{align*}
+    \|\restrict{d\Psi }{M} \cdot H\| 
+    & \leq \left\Vert \Psi \left(M\right)\frac{1}{n}(MH^T + HM^T) \Psi \left(M\right) M\right\Vert + \left\Vert \Psi \left(M\right)H\right\Vert
+    \leq O \left(\frac{\|H\|_{\hs}}{\Im(z)^2}\right).
+  \end{align*}
+\end{proof}
+
+
+\section{A first deterministic equivalent}
+
+% One is often merely working with linear functionals of $Q$, and since an elementary result implies that $Q \in \mathbb E Q \pm \mathcal E_2$, one naturally wants to estimate the expectation $\mathbb E [Q]$.
+In this subsection, we provide a first estimator of $\mathbb E [Q]$. 
+
+
+An efficient approach, developed in particular in \cite{SIL86,SIL95} is to look for a deterministic equivalent of $Q^z$ depending on a deterministic diagonal matrix $\Delta \in \mathbb R^n$ and having the form:
+\begin{align}\label{eq:definition_of_tilde_Q}
+  \tilde Q^\Delta= \left(  zI_p - \Sigma^{\Delta} \right)^{-1}&
+  &\text{where}&
+  &\Sigma^{\Delta} \equiv  \frac{1}{n}\sum_{i=1}^n \frac{\Sigma_i}{\Delta_i} = \frac{1}{n} \mathbb E[X \Delta^{-1} X^T].
+ \end{align}
+ One can then express the difference with the expectation $\mathbb{E} \left[Q^z\right]$ followingly:
+ \begin{align*}
+  \mathbb{E} \left[Q\right] - \tilde Q^\Delta
+  &=\mathbb{E}\left[Q\left(\frac{1}{n}XX^T - \Sigma^{\Delta}\right)\tilde{Q}^\Delta\right]
+  =\frac{1}{n}\sum_{i=1}^n  \mathbb{E}\left[Q  \left(x_ix_i^T - \frac{\Sigma_i}{\Delta_i} \right)\tilde{Q}^\Delta\right].
+  % &\hspace{0.5cm}+ \frac{1}{n^2}\sum_{i=1}^n \mathbb{E}\left[\left(1+\Delta_i\right)Q_{-i}x_ix_i^TQ \Sigma \tilde Q(\Delta) \right]
+\end{align*}
+To pursue the estimation of the expectation, one needs to control the dependence between $Q$ and $x_i$. For that purpose, one uses classically the Schur identities:
+\begin{align}\label{eq:lien_q_qj_schur}
+  % &Q=Q_{-i} +\frac{1}{n}(1+ \frac1nx_i^TQx_i)Q_{-i}x_ix_i^TQ_{-i}&
+  % &\text{and}&
+  % &Qx_i=(1+ \frac1nx_i^TQx_i)Q_{-i}x_i,
+  &Q=Q_{-i} +\frac{1}{n}\frac{Q_{-i}x_ix_i^TQ_{-i}}{1- \frac1{n}x_i^TQ_{-i}x_i}&
+  &\text{and}&
+  &Qx_i=\frac{Q^z_{-i}x_i}{1- \frac1{n}x_i^TQ^z_{-i}x_i},
+\end{align}
+for $Q_{-i} = (I_n - \frac{1}{zn} X_{-i}X_{-i}^T)^{-1}$ (recall that $X_{-i} = (x_1,\ldots, x_{i-1}, 0, x_{i+1}, \ldots, x_n) \in \mathcal M_{p,n}$). The Schur identities can be seen as simple consequences to the so called ``resolvent identity'' that can be generalized to any, possibly non commuting, square matrices $A,B \in \mathcal M_p$ with the identity:
+\begin{align}\label{eq:resolvent_identity}
+   A^{-1} - B^{-1} = A^{-1} (B-A) B^{-1}&
+   &\text{or}&
+   &A^{-1} + B^{-1} = A^{-1} (A+B) B^{-1}
+ \end{align}
+ (it suffices to note that $A(A^{-1} + A^{-1} (B-A) B^{-1})B = I_p$).
+
+% The central quantity of our estimation is
+Introducing the notation:
+\begin{align*}
+   \Lambda \equiv \diag_{1\leq i \leq n} \left( 1 - \frac1nx_i^TQ_{-i}x_i \right) \in \prod_{(n,p)\in \Theta_\gamma, \Im(z)\in (0,1]} \mathcal D_n,
+   % &\text{satisfying: } \ \ \forall i \in [n]: \ Q x_i = \frac{1}{\Lambda_i}Q_{-i} x_i,
+ \end{align*} 
+ one has the identity $Q x_i = \frac{1}{\Lambda_i}Q_{-i} x_i$.
+It is then possible to express:
+ % thanks to the independence between $Q_{-i}$ and $x_i$:
+\begin{align}\label{eq:definition_epsilon_1_2}
+\mathbb{E} \left[Q\right] - \tilde Q^\Delta 
+    &= \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\left[Q_{-i} \left(\frac{x_ix_i^T}{\Lambda_i} - \frac{\Sigma_i}{\Delta_i}\right)\tilde{Q}^\Delta\right] 
+    + \frac{1}{n}\sum_{i=1}^n \frac{1}{\Delta_i}\mathbb{E}\left[(Q_{-i} - Q) \Sigma_i \tilde Q^\Delta\right]
+  % &= \varepsilon_1 + \varepsilon_2 \\
+  % &= \varepsilon_1 + \delta_1 + \delta_2 +\varepsilon_2 \\
+  % \text{with :} \ \ \ &\left\{
+  % \begin{aligned}
+  %   &\varepsilon_1 = \frac{1}{n} \mathbb{E}\left[\sum_{i = 1}^nQ_{-i}x_i \left(\frac{\Delta_i - \Lambda_i}{\Lambda_i\Delta_i}\right)x_i^T \tilde{Q}^\Delta \right]
+  %    % = \frac{1}{n} \mathbb{E}\left[QX \left(\frac{\Delta - \Lambda}{z\Delta}\right)X^T \tilde{Q}^\Delta \right] \\
+  %   % &\delta_1 = \frac{1}{n}\sum_{i=1}^n \mathbb{E}\left[Q_{-i} \left(\frac{x_ix_i^T - \mathbb{E}[x_ix_i^T] }{\Delta_i}\right)\tilde{Q}^\Delta \right] \\
+  %   % &\delta_2 = \frac{1}{n}\sum_{i=1}^n \mathbb{E}\left[Q_{-i} \left(\frac{\mathbb{E}[x_ix_i^T] - \Sigma_i}{\Delta_i}\right)\tilde{Q}^\Delta \right] \\
+  %   & \varepsilon_2 =  -\frac{1}{zn^2} \sum_{i=1}^n \frac{1}{\Delta_i}\mathbb{E}\left[Qx_i x_i^TQ_{-i}\Sigma_i\tilde{Q}^\Delta\right],
+  % \end{aligned}
+  % \right. \nonumber
+\end{align}
+where we recall that $Q - Q_{-i} = \frac{1}{n}Qx_i x_i^TQ_{-i}$.
+% \begin{remark}\label{rem:lambda_pas_Q}
+% Since $\Lambda$ is appearing on the denominator, one might have been tempted to rather study $\frac{1}{\Lambda}$ and rely on the identity:
+% \begin{align}\label{eq:link_lambda_cQ}
+%    \frac{1}{\Lambda^z}
+%    =\diag_{i\in [n]}\left(\frac{1}{1- \frac1{n}x_i^TQ_{-i}x_i}\right)
+%   = I_n + \frac{1}{n}\diag(X^TQX) = \diag(\check Q).
+% \end{align}
+% Taking $\Delta = \frac{1}{\diag(\check Q)}$ indeed provides a first deterministic equivalent, however, it does not combines well with the fixed point equation on which will rely our second deterministic equivalent.
+% % to introduce in next section the fixed point equation 
+% % to devise the second deterministic equivalent, one relies on the approximation (that will rigorously set in next section):
+% % \begin{align*}
+% %     \mathbb E
+% % \end{align*}
+% \end{remark}
+
+From this decomposition, one is enticed into choosing, in a first step $\Delta = \mathbb E[\Lambda] \in \mathcal D_n(\mathbb C)$ so that $\varepsilon_1$ would be small. 
+% Introducing:
+% \begin{align*}
+%     \hat \Lambda^- \equiv \mathbb E[\Lambda],
+% \end{align*}
+% one can devise our first determinitic equivalent.
+
+\begin{proposition}\label{pro:first_first_det_eq}
+    $\|Q - \tilde Q^{\mathbb E[\Lambda]}\|_{\hs}\leq O \left( \frac{1}{\Im(z)^4\sqrt{n}} \right)$
+\end{proposition}
+The proof of this proposition relies on the next four preliminary lemmas.
+\begin{lemma}\label{lem:lower_bound_lambda}
+     $\Lambda \geq O \left( \frac{1}{\Im(z)} \right)$.
+ \end{lemma} 
+ \begin{proof}
+    It is a simple consequence of Lemma~\ref{lem:Borne_resolvante} and the identity:
+     \begin{align}\label{eq:link_lambda_cQ}
+   \frac{1}{\Lambda^z}
+   =\diag_{i\in [n]}\left(\frac{1}{1- \frac1{n}x_i^TQ_{-i}x_i}\right)
+  = I_n + \frac{1}{n}\diag(X^TQX) = \diag(\check Q).
+\end{align}
+ \end{proof}
+\begin{lemma}\label{lem:concentration_Q_m_i_autour_Q}
+    $\|\mathbb E[Q_{-i}]- \mathbb E[Q] \| \leq O\left( \frac{1}{n\Im(z)^2} \right)$.
+\end{lemma}
+Note from \cite{} that this lemma implies in particular from Proposition~\ref{pro:concentration_resolvente_1}  that $Q_{-i}\in \mathbb E[Q] \pm \alpha \circ \left( \Im(z)^2\sqrt n \ \id \right)$.
+\begin{proof}
+    % One already knows from Proposition~\ref{pro:concentration_resolvente_1} that $Q_{-i}\in \alpha \left( \Im(z)^2\sqrt n \ \cdot \right)$ ($Q_{-i}$ satisfies the same hypotheses as $Q$). 
+    Let us bound for any deterministic vector $u\in \mathbb C$:
+    \begin{align*}
+        |u^*(\mathbb E[Q_{-i}] - \mathbb E[Q])u| 
+        &= \frac{1}{n} \left\vert \mathbb E \left[ \frac{u^*Q_{-i}x_ix_i^* Q_{-i}u}{\Lambda_i} \right] \right\vert\\
+        &\leq  \mathbb E[u^*Q_{-i}\Sigma_iQ_{-i}u] O \left( \frac{1}{n\Im(z)} \right)
+        \leq O\left( \frac{1}{n\Im(z)^2} \right)
+        % \leq \frac{\sqrt p}{n} \frac{1}{\Im(z)^2}\|A\|_{\hs}.
+    \end{align*}
+    thanks to Lemmas~\ref{lem:Borne_resolvante} and~\ref{lem:lower_bound_lambda}
+    % That implies that $\|\mathbb E[Q_{-i}] - \mathbb E[Q]\|\leq O(\frac{1}{ n \Im(z)^2})$ and therefore $\|\mathbb E[Q_{-i}] - \mathbb E[Q]\|_{\hs}\leq O(\frac{1}{\sqrt n \Im(z)^2})$, one can then conclude with \cite{}. 
+\end{proof}
+\begin{lemma}\label{lem:bound_Q_tilde}
+    Given $\Delta \in \mathcal D_n$, $\|\tilde Q^{\Delta}\|\leq O \left( \frac{1}{\min_{i\in [n]}(\Im(z\Delta_i))} \right)$.
+\end{lemma}
+\begin{proof}
+    \textcolor{red}{TODO}
+\end{proof}
+\begin{lemma}\label{lem:zlambda_bound}
+    $\Im(z\Lambda) \leq \Im(z)$.
+\end{lemma}
+One can deduce directly from Lemmas~\ref{lem:bound_Q_tilde} and~\ref{lem:zlambda_bound} that $\|\tilde Q^{\mathbb E[\Lambda]}\|\leq O \left( \frac{1}{\Im(z)} \right)$.
+\begin{proof}
+    Let us compute:
+    \begin{align*}
+        \Im(z\Lambda)
+        = \Im(z) - \frac{1}{n}\tr \left( \Sigma_i (Q-\bar Q) \right)
+        = \Im(z) - \frac{1}{n}\tr \left( \Sigma_i Q (\bar zI_p- zI_p)\bar Q \right)
+        \geq \Im(z),
+    \end{align*}
+    since $\tr \left( \Sigma_i Q\bar Q \right)\geq 0$.
+\end{proof}
+\begin{proof}[proof of Proposition~\ref{pro:first_first_det_eq}]
+    To prove our bound let us consider $A\in \mathcal M_p$, and start with the first component of \eqref{eq:definition_epsilon_1_2}:
+    \begin{align*}
+        &\frac{1}{n}\sum_{i=1}^n  \mathbb{E}\left[\tr  \left( AQ_{-i} \left(\frac{x_ix_i^T}{\Lambda_i} - \frac{\Sigma_i}{\mathbb E[\Lambda_i]}\right)\tilde{Q}^{\mathbb E[\Lambda]} \right)\right]\\
+        &\hspace{1cm}= \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\left[x_i^T\tilde{Q}^{\mathbb E[\Lambda]}AQ_{-i} x_i \left(\frac{1}{\Lambda_i} -  \frac{1}{\mathbb E \left[\Lambda_i \right]}\right)\right]\\
+        &\hspace{1cm}= \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\left[x_i^T\tilde{Q}^{\mathbb E[\Lambda]}AQ x_i \left(\frac{\mathbb E \left[\Lambda_i \right] - \Lambda_i}{\mathbb E \left[\Lambda_i \right]}\right)\right]\\
+        &\hspace{1cm}= \frac{1}{n}\sum_{i=1}^n \frac{1}{\mathbb E[\Lambda_i]} \mathbb{E}\left[\left( x_i^T\tilde{Q}^{\mathbb E[\Lambda]}AQ x_i - \mathbb E \left[ x_i^T\tilde{Q}^{\mathbb E[\Lambda]}AQ x_i \right] \right) \right]\\
+        &\hspace{1cm}= \frac{1}{n} \mathbb{E}\left[\tr\left( \frac{1}{\mathbb E[\Lambda]}X^T\tilde{Q}^{\mathbb E[\Lambda]}AQ X\right) - \mathbb E \left[ \tr\left( \frac{1}{\mathbb E[\Lambda]}X^T\tilde{Q}^{\mathbb E[\Lambda]}AQ X\right) \right] \right]
+        \leq O \left( \frac{1}{\sqrt{n}\Im(z)^4} \right),
+        % \leq O \left( \frac{\|\tilde Q^{\mathbb E[\Lambda]}\|}{\sqrt{n}\Im(z)^3} \right),
+    \end{align*}
+    thanks to the matricial, heavy-tailed form of Hanson-Wright result ($\sigma_\alpha \int t\alpha \leq \infty$ and $\alpha(\sigma_\alpha)\geq O(1)$) applied to:
+    \begin{itemize}
+         \item  the concentration $\tilde Q^{\mathbb E[\Lambda]}X\in \alpha $ (by hypothesis on $X$ and thanks to the bound provided by Lemmas~\ref{lem:bound_Q_tilde} and~\ref{lem:zlambda_bound}),
+         \item $QX \in \alpha (\frac{1}{\Im(z)^2})$ (see Lemma~\ref{lem:concentration_QX_s_z}),
+         \item $\|\frac{1}{\mathbb E[\Lambda]}_{\hs}\leq O \left( \frac{\sqrt{n}}{\Im(z)} \right)$ (see Lemma~\ref{lem:lower_bound_lambda}).
+     \end{itemize}
+
+    The second component of~\eqref{eq:definition_epsilon_1_2} is simply bounded thanks to Lemma~\ref{lem:concentration_Q_m_i_autour_Q} that implies:
+     % with an application of Cauchy-Schwarz inequality:
+    \begin{align*}
+        \mathbb{E}\left[\tr \left( A(Q_{-i} - Q) \Sigma_i \tilde Q^{\mathbb E[\Lambda]} \right)\right]
+        \leq O \left(  \|\mathbb E[Q_{-i}]- \mathbb E[Q] \| \frac{\sqrt{p}}{\Im(z)} \right)
+        % &\hspace{1cm} \leq \frac{1}{n^2}\sqrt{\mathbb{E}\left[\sum_{i=1}^n  \frac{1}{{\mathbb E[\Lambda_i]^2}}\tr \left(AQ_{-i}x_ix_i^T Q_{-i}\right)\right]} \sqrt{\mathbb{E}\left[\sum_{i=1}^n  \tr \left(A\tilde Q^{\mathbb E[\Lambda]}\Sigma_iQx_ix_i^T Q \Sigma_i \tilde Q^{\mathbb E[\Lambda]^2}\right)\right]}\\
+        % &\hspace{1cm} = \frac{1}{n^{\frac{3}{2}}}\sqrt{\mathbb{E}\left[\sum_{i=1}^n  \frac{1}{{\mathbb E[\Lambda_i]^2}}\tr \left(AQ_{-i}\Sigma_i Q_{-i}\right)\right]} \sqrt{\mathbb{E}\left[\frac{1}{n} \tr \left(A\tilde Q^{\mathbb E[\Lambda]}\Sigma_iQXX Q \Sigma_i \tilde Q^{\mathbb E[\Lambda]}\right)\right]}
+        \leq O \left( \frac{1}{\sqrt n\Im(z)^ 2} \right) 
+    \end{align*}
+    Combining those two bounds with \eqref{eq:definition_epsilon_1_2}, one obtains the result of the proposition.
+    % \begin{align*}
+    %     \|Q - \tilde Q^{\mathbb E[\Lambda]}\|_{\hs}\leq O \left( \frac{\|\tilde Q^{\mathbb E[\Lambda]}\|}{\Im(z)^3\sqrt{n}} \right),
+    % \end{align*}
+    % and in particular:
+    % \begin{align*}
+    %     \|\tilde Q^{\mathbb E[\Lambda]}\| \leq \|Q - \tilde Q^{\mathbb E[\Lambda]}\|_{\hs} + \|Q\|\leq O \left( \frac{\|\tilde Q^{\mathbb E[\Lambda]}\|}{\Im(z)^3\sqrt{n}} \right) + O \left( \frac{1}{\Im(z)} \right).
+    % \end{align*}
+    % \textcolor{red}{That does not implies $\|\tilde Q^{\mathbb E[\Lambda]}\|\leq O \left( \frac{\|\tilde Q^{\mathbb E[\Lambda]}\|}{\Im(z)^3} \right)$} from which one can deduce the result of the Proposition
+\end{proof}
+
+
+
+
+
+
+
+% To prepare the e of the next deterministic equivallent, we will see that i
+In next section, we will see that it is more convenient to work with the deterministic diagonal matrix
+\begin{align*}
+     \hat \Lambda \equiv
+ \diag \left( 1 - \frac{1}{n} \tr(\Sigma_i\mathbb E[Q]) \right)_{1\leq i \leq n} \in \mathcal D_n(\mathbb C),
+ \end{align*} 
+ which is close to $\mathbb E[\Lambda]$ thanks to Lemma~\ref{lem:concentration_Q_m_i_autour_Q}.
+
+\begin{proposition}\label{pro:Qt1_Qt2}
+    $\|\tilde Q^{\mathbb E[\Lambda]} - \tilde Q^{\hat \Lambda}\|\leq O \left( \frac{1}{\Im(z)^6  n} \right)$.
+\end{proposition}
+\begin{proof}
+    Let us bound for any deterministic vector $u\in \mathbb C^p$:
+    \begin{align*}
+        \left\vert u^* (\tilde Q^{\mathbb E[\Lambda]} - \tilde Q^{\hat \Lambda})u \right\vert
+        = \frac{1}{n}\sum_{i=1}^n\left\vert u^* \tilde Q^{\mathbb E[\Lambda]}\Sigma_i  \tilde Q^{\hat \Lambda} u  \right\vert \left\vert \frac{\check \Lambda_i - \mathbb E[\Lambda_i]}{\check \Lambda_i \mathbb E[\Lambda_i]} \right\vert.
+    \end{align*}
+    One can then directly conclude thanks to the bounds given in Lemmas~\ref{lem:Borne_resolvante} and~\ref{lem:bound_Q_tilde} and the bound:
+    \begin{align*}
+        |\check \Lambda_i - \mathbb E[\Lambda_i]| = \frac{1}{n}\left\vert \tr(\Sigma_i (Q - Q_{-i})) \right\vert\leq O \left( \frac{1}{\Im(z)^2 n} \right).
+    \end{align*}
+\end{proof}
+% \begin{lemma}\label{lem:lower_bound_lambda}
+%      $\Lambda, \check \Lambda \geq O \left( \frac{1}{\Im(z)} \right)$.
+%  \end{lemma} 
+%  \begin{proof}
+%     It is a simple consequence of Lemma~\ref{lem:Borne_resolvante} and the identity:
+%      \begin{align}\label{eq:link_lambda_cQ}
+%    \frac{1}{\Lambda^z}
+%    =\diag_{i\in [n]}\left(\frac{1}{1- \frac1{n}x_i^TQ_{-i}x_i}\right)
+%   = I_n + \frac{1}{n}\diag(X^TQX) = \diag(\check Q).
+% \end{align}
+%  \end{proof}
+%  % Since one isbasical
+% % One can then set the concentration of $\lambda$ around $\check \Lambda$
+% \begin{lemma}\label{lem:Concentration_lambda}
+% $\Lambda \in \hat \Lambda \pm \alpha \circ \left( \sqrt{\sqrt n\Im(z)^2 \id} \right)$ (in our regime, $\Im(z)\leq 1$).
+%   % \begin{align*}
+%   %   (\Lambda \ | \ \mathcal A_Q) \in \mathbb E [\Lambda] \pm \mathcal E_2(|\kappa_z|/\sqrt n)&
+%   %   &\text{in} \ \left( \mathcal D_n(\mathbb C), \|\cdot \| \right).
+%   % % &\text{in} \ \ (\mathcal D_n(\mathbb C), \| \cdot \|_F).
+%   % \end{align*}
+%   % and .
+% \end{lemma}
+% To set this lemma, one first need to justify the fact that one can replace $Q$ with $Q_{-i}$.
+% \begin{lemma}\label{lem:conc_uQx}
+%     Given a vector $u\in \mathbb C^p$ such that $\|u\|\leq 1$:
+%     \begin{align*}
+%         u^*Qx_i, u^*Q_{-1}x_i \in O \left( \frac{1}{\Im(z)^2} \right) \pm \alpha \circ \left(\Im(z)^2 \id\right).
+%     \end{align*}
+% \end{lemma}
+% \begin{proof}
+%   % Thus, under $\mathcal A_Q$, $\Psi$ is $O(\kappa_z\check\kappa_z)$-Lipschitz (for the Frobenius norm) and therefore $QX \propto \mathcal E_2(\kappa_z\check\kappa_z)$. 
+%   The concentration of $u^*Qx_i$ is just a consequence of the concentration of $QX$ given in Lemma~\ref{lem:concentration_QX_s_z}. To show the concentration of $u^*Q_{-i}x_i$ let us start with the decomposition:
+%   \begin{align*}
+%       |u^*Q_{-i}x_i - u^*\mathbb E[Q_{-i}x_i]|
+%       \leq |u^*Q_{-i}(x_i - \mu_i)| + |u^*(Q_{-i} - \mathbb E[Q_{-i}])\mu_i|
+%   \end{align*}
+%   then one can bound:
+%   \begin{align*}
+%       \mathbb P \left( |u^*Q_{-i}(x_i - \mu_i)|\geq t \right)\leq C\mathbb E \left[  \alpha \left( \frac{ct}{\|u^*Q_{-i}\|} \right) \right] \leq C\alpha \left( c\Im(z) t \right),
+%   \end{align*}
+
+%   It is elementary to bound:
+%   \begin{align*}
+%       |\mathbb E[u^ *Q_{-i}x_i]| = |u^ * \mathbb E[Q_{-i}]\mu_i| \leq O \left( \frac{1}{\Im(z)} \right).
+%   \end{align*}
+
+%   We then rely on this bound to control $ |\mathbb E[u^*Q x_i]|$. Schur identities~\eqref{eq:lien_q_qj_schur} allows to bound:
+%   \begin{align*}
+%     \left\vert \mathbb E[u^*Q x_i] \right\vert
+%     = \left\vert \mathbb E \left[ \frac{ u^*Q_{-i} x_i}{\Lambda_i} \right] \right\vert
+%     &\leq \sqrt{\mathbb E \left[ \frac{u^*Q_{-i} x_ix_i^TQ_{-i} u}{|\Lambda_i|^2} \right]}\\
+%     &\leq O \left( \frac{1}{\Im(z)} \right) \sqrt{\mathbb E \left[ u^*Q_{-i} \Sigma_i Q_{-i} u \right]} \leq O \left( \frac{1}{\Im(z)^2} \right)
+%     % \leq \mathbb E[ |u^TQ_{-i} x_i|]\frac{1}{\Im(z)} \leq O(\kappa_z\check \kappa_z),
+%   \end{align*}
+%   indeed, $\frac{1}{|\Lambda_i|^2}\leq O (\frac{1}{\Im(z)^2})$ thanks to to Lemma~\ref{lem:Borne_resolvante} combined with \eqref{eq:link_lambda_cQ}.
+% \end{proof}
+
+% \begin{proof}[Proof of Lemma~\ref{lem:Concentration_lambda}]
+%   Let us bound:
+%   \begin{align*}
+%     \left\vert \Lambda - \hat \Lambda \right\vert
+%     \leq \frac{1}{n}\left\vert x_i^TQ_{-i}x_i - \tr(\Sigma_i Q_{-i}) \right\vert + \frac{1}{n}\left\vert \tr(\Sigma_i (Q_{-i}-\mathbb E[Q])) \right\vert.
+%   \end{align*}
+%   The Hanson-Wright inequality provided in \cite provides the existence of constants $C,C',c,c'>0$ such that one has for any $(n,p) \in \Theta_\gamma$, any $z\in $ the concentration:
+%   \begin{align*}
+%       \mathbb P \left( \frac{1}{n}\left\vert x_i^TQ_{-i}x_i - \tr(\Sigma_i Q_{-i}) \right\vert\geq t \right)
+%       &= C\mathbb E \left[ \alpha \left( \frac{cnt}{\|Q\|_{\hs}} \right) + \alpha \left( \sqrt{\frac{cnt}{\|Q\|}} \right) \right] \\
+%       &\leq C' \alpha \left( \sqrt{c\sqrt n\Im(z)t} \right)
+%   \end{align*}
+%   since $p\leq O(n)$, $\|Q\|_{\hs}\leq \sqrt p \|Q\|\leq \frac{\sqrt n}{\Im(z)}$ and $\alpha \leq C\alpha(c\sqrt{\id})$ for some constants $C,c>0$.
+%   Lemma~\ref{lem:concentration_Q_m_i_autour_Q} and the fact that, in our regime ($p\leq \gamma n$, $\Im(z) \in (0,1]$) $\Im(z)^2 \leq \Im(z)$, then allow us to conclude. 
+% \end{proof}
+
+
+% We can now prove the main result of this subsections that allows us to set that $\tilde Q^{\hat \Lambda}$ is a deterministic equivalent of $Q$.
+% \begin{proposition}\label{pro:borne_EQ_m_tQ}
+%   % There exist a constant $C>0$ such that:
+%   Given $z\in \mathbb C \setminus S_{-0}^\varepsilon$:
+%   \begin{align*}
+%      \left\Vert \tilde Q^{\hat \Lambda}\right\Vert \leq O \left( \frac{1}{\Im(z)} \right)&
+%     % O(1) \leq \tilde Q^{z} \left(\frac{I_n}{I_n - \Delta}\right) \leq O(1)&
+%     &\text{and}&
+%     &\left\Vert \mathbb{E}[Q] - \tilde Q^{\hat \Lambda} \right\Vert_F \leq  O \left(\frac{1}{\Im(z)^2\sqrt n} \right).
+%   \end{align*}
+% \end{proposition} 
+
+%  \begin{proof}[Proof of Proposition~\ref{pro:borne_EQ_m_tQ}]
+%  Let us note for simplicity $\kappa_{\tilde Q} \equiv \|\tilde Q^{\hat \Lambda}\|$.
+%   % With the notation introduced in \eqref{eq:definition_epsilon_1_2}, note that we have to bound $\|\mathbb E[\varepsilon_1] \|_F$ and $\|\mathbb E[\varepsilon_2]\|_F$. 
+%   Looking at decomposition \eqref{eq:definition_epsilon_1_2}, considering a  matrix $A\in \mathcal{M}_p(\mathbb C)$ satisfying $\|A\|_F \leq 1$, we can start with the bound:% thanks to Proposition~\ref{pro:estimation_XDY}:
+%   \begin{align*}
+%      |\tr(A\varepsilon_1)| 
+%      &= \left\vert \frac{1}{n} \mathbb{E}\left[\sum_{i = 1}^n\tr \left( AQ_{-i}x_i \left(\frac{\hat \Lambda_i - \Lambda_i}{\Lambda_i\hat \Lambda_i}\right)x_i^T \tilde{Q}^{\hat \Lambda} \right) \right]\right\vert\\
+%      &= \left\vert \frac{1}{n} \sum_{i = 1}^n \frac{1}{\hat \Lambda_i} \mathbb{E}\left[ x_i^T \tilde{Q}^{\hat \Lambda}AQx_i \left(\hat \Lambda_i - \mathbb E[\Lambda_i] + \mathbb E[\Lambda_i] -\Lambda_i\right) \right]\right\vert\\
+%      &=  \frac{1}{n} \sum_{i = 1}^n \frac{1}{\hat \Lambda_i} \left\vert\mathbb{E}\left[ x_i^T \tilde{Q}^{\hat \Lambda}AQx_i \right]\left(\hat \Lambda_i - \mathbb E[\Lambda_i]\right) \right\vert\\
+%      &\hspace{0.5cm} + \left\vert\mathbb{E}\left[ \left( x_i^T \tilde{Q}^{\hat \Lambda}AQx_i - \mathbb E[x_i^T \tilde{Q}^{\hat \Lambda}AQx_i]\right) \Lambda_i]\right) \right]\right\vert\\
+%    \end{align*}
+%    obtained with the bound $\frac{1}{\hat \Lambda} \leq O(\frac{\check \kappa_z}{|z|})\leq O(1)$ given by Lemma~\ref{lem:Borne_Lambda_hat} and applying Proposition~\ref{pro:estimation_XDY} with the hypotheses:
+%    \begin{itemize}
+%       \item $X \ | \ \mathcal A_Q \propto \mathcal E_2$ and $\|\mathbb E[x_i]\| \leq O(1)$ Assumption~\ref{ass:concentration_X},
+%       \item $QX \ | \ \mathcal A_Q \propto \mathcal E_2(\kappa_z\check\kappa_z) $ and $\|\mathbb E[Qx_i]\|\leq O(\kappa_z\check\kappa_z)$ given by Lemma~\ref{lem:concentration_QX_s_z},
+%       \item $ \Lambda \ | \ \mathcal A_Q\in \mathbb E[\Lambda] \pm \mathcal E_2 \left(\frac{\kappa_z}{\sqrt n}\right)$ in $(\mathcal{D}_{n}, \| \cdot \|)$ given by Lemma~\ref{lem:Concentration_lambda},
+%       \item $\|  \mathbb E[\Lambda] - \hat \Lambda\|_F \leq O(\kappa_z/\sqrt n)$ thanks to Lemma~\ref{lem:lambda_lambda_hat_proche}
+%       % \item $|\hat \Lambda_i| \geq O(|z|/\check \kappa_z)$ given by Lemma~\ref{lem:Borne_Lambda_hat},
+%     \end{itemize}
+%     % and bounding thanks to .
+%   Second, let us bound thanks to Cauchy-Schwarz inequality:
+%   \begin{align*}
+%     \left\vert \mathbb \tr(A\varepsilon_2) \right\vert
+%     &\leq\sqrt{\frac{1}{|z|^2n^2} \mathbb{E}\left[\tr \left(AQ X |\hat \Lambda_n |^{-2} X^T\bar Q \bar A^T\right) \right]}\\
+%     &\hspace{1cm}\cdot \sqrt{\frac{1}{n^2}\sum_{i=1}^n \mathbb{E}\left[\tr \left(\tilde{Q}^{\hat \Lambda}\Sigma_ i Q_{-i}x_ix_i^T Q_{-i} \Sigma_i\bar{\tilde{Q}}^{\hat \Lambda}\right)\right]} \\
+%     &\leq O \left(\frac{\kappa^4_z \check \kappa_z^4}{|z|^2}\sqrt{\frac{\|A\|_F^2 }{ n}\frac{ \sup_{i\in[n]}\tr \left(\Sigma_i^3\right) \kappa_{\tilde Q}^2 }{ n}}\right) \leq O \left(\frac{\kappa_{\tilde Q}}{\sqrt n}\right)
+%     \end{align*}
+%     thanks to the bounds provided by our assumptions, and Lemmas~\ref{lem:Borne_resolvante},~\ref{lem:Borne_Lambda_hat} and~\ref{lem:concentration_QX_s_z}. 
+
+%     Taking the supremum on $A \in \mathcal M_{p,n}(\mathbb C)$ and putting the bounds on $\left\Vert \varepsilon_1 \right\Vert_F$, $\left\Vert \varepsilon_2 \right\Vert_F$ together, we obtain:
+%     \begin{align*}
+%       \left\Vert \mathbb{E} \left[Q\right] - \tilde Q^{\hat \Lambda} \right\Vert_ F \leq O \left(\frac{\kappa_{\tilde Q}}{\sqrt{n}}\right)
+%     \end{align*}
+%     So, in particular $\kappa_{\tilde Q} \equiv\left\Vert \tilde Q^{\hat \Lambda} \right\Vert \leq  \left\Vert \mathbb{E} \left[Q\right] \right\Vert + O \left(\frac{\kappa_{\tilde Q}}{\sqrt{n}}\right)$,
+%     % \begin{align*}
+%     %   \kappa_{\tilde Q} \equiv\left\Vert \tilde Q^{\hat \Lambda} \right\Vert \leq  \left\Vert \mathbb{E} \left[Q\right] \right\Vert + O \left(\frac{\kappa_{\tilde Q}}{\sqrt{n}}\right),
+%     % \end{align*}
+%     which implies that $\kappa_{\tilde Q} \leq O(\kappa_z)$ as $\Vert \mathbb{E} \left[Q\right] \Vert$ since $\frac{1}{\sqrt n} = o(1)$. We obtain then directly the second bound of the proposition.
+%     % We obtain then directly $\left\Vert \mathbb{E}Q - \tilde Q^{z} \left(\frac{I_n}{I_n - \Delta}\right) \right\Vert_ F \leq O \left(N_{\tilde Q}\sqrt{\frac{\log n}{n}}\right)$ and $\tilde Q^{z} \left(\frac{I_n}{I_n - \Delta}\right) \geq \mathbb{E}Q  + O \left(N_{\tilde Q}\sqrt{\frac{\log n}{n}}\right)$.
+% \end{proof}
+\section{A second deterministic equivalent}
+\appendix
 \section{The semi-metric and Lipschitz mapping}
 We introduce the semi-metric $d_s$ on $\mathcal{D}_n(\mathbb{H})=\{D\in \mathcal{D}_n,\forall i \in [n],\Im{D}_i>0\}$:
 $$d_s(\Delta,\Delta')=\sup_{1\leq i\leq n}\frac{|\Delta-\Delta'|}{\sqrt{\Im(\Delta)\Im(\Delta')}}$$
